@@ -1,0 +1,16 @@
+*.apk
+*.ap_
+*.aab
+*.jks
+*.keystore
+*.p12
+*.key
+build/
+app/build/
+.gradle/
+.idea/
+local.properties
+captures/
+*.hprof
+.DS_Store
+*.log

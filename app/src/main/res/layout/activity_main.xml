@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+    <!-- ==================== 1. 上半部分：相机预览 (3:4) ==================== -->
+    <FrameLayout
+        android:id="@+id/camera_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#111111"
+        app:layout_constraintDimensionRatio="3:4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/viewFinder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/ivFocusBox"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/focus_ring"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tvOverlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改水印内容"
+            android:textSize="30sp"
+            android:textColor="#FFFFFF"
+            android:shadowColor="#000000"
+            android:shadowDx="5"
+            android:shadowDy="5"
+            android:shadowRadius="5"
+            android:layout_gravity="center" />
+
+        <!-- 闪光灯 -->
+        <LinearLayout
+            android:id="@+id/layoutFlashControl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#66000000"
+            android:padding="5dp"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp">
+
+            <ImageButton
+                android:id="@+id/btnFlashOn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_flash_on"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="开启" />
+
+            <ImageButton
+                android:id="@+id/btnFlashOff"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_flash_off"
+                android:background="@null"
+                android:padding="5dp"
+                android:layout_marginStart="5dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="关闭" />
+        </LinearLayout>
+
+        <!-- 缩放 -->
+        <TextView
+            android:id="@+id/tvZoomDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.0x"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:background="#66000000"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="10dp"/>
+    </FrameLayout>
+
+
+    <!-- ==================== 2. 下半部分：黑色操作区 ==================== -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomControlPanel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#000000"
+        app:layout_constraintTop_toBottomOf="@+id/camera_container"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/controls_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- 第一行：输入框 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="15dp">
+
+                <EditText
+                    android:id="@+id/etFilename"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_input_dark"
+                    android:hint="文件名"
+                    android:textColor="#AAAAAA"
+                    android:textColorHint="#666666"
+                    android:textSize="13sp"
+                    android:singleLine="true"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <EditText
+                    android:id="@+id/etWatermarkText"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_input_dark"
+                    android:hint="水印内容"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#666666"
+                    android:textSize="13sp"
+                    android:singleLine="true"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- 第二行：工具区 (颜色左边，右边两行滑条) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
+
+                <!-- 颜色按钮 -->
+
+                <!-- 右侧：包含“字号”和“旋转”两个滑条的垂直布局 -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnColor"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="#FFFFFF"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    android:text="颜色"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="25dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="15dp">
+
+                    <!-- 字号调节 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tvLabelSize"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:text="字号"
+                            android:textColor="#888888"
+                            android:textSize="10sp"/>
+                        <SeekBar
+                            android:id="@+id/sbSize"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="100"
+                            android:progress="30"
+                            android:progressTint="#FFFFFF"
+                            android:thumbTint="#FFFFFF"/>
+                    </LinearLayout>
+
+                    <!-- 旋转调节-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <TextView
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:text="旋转"
+                            android:textColor="#888888"
+                            android:textSize="10sp"/>
+                        <!-- max="3" 代表 0,1,2,3 四个档位 -->
+                        <SeekBar
+                            android:id="@+id/sbRotate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="3"
+                            android:progress="0"
+                            android:progressTint="#FFFFFF"
+                            android:thumbTint="#FFFFFF"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 第三行：拍照按钮 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCapture"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:backgroundTint="#D32F2F"
+                    app:cornerRadius="45dp"
+                    app:strokeColor="#FFFFFF"
+                    app:strokeWidth="4dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
